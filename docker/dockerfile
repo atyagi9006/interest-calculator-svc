@@ -1,0 +1,32 @@
+FROM golang:1.20 as build_interest-cal-api
+
+ENV CGO_ENABLED 0
+
+ARG BUILD_REF
+
+# cpy source to container
+COPY . /service
+
+# build binary 
+# this is the directory
+WORKDIR /service/app/services/interest-cal-api
+
+RUN go build -ldflags "-X main.build=${BUILD_REF}"
+
+FROM  alpine:3.14
+
+ARG BUILD_DATE
+ARG BUILD_REF
+
+COPY --from=build_interest-cal-api /service/app/services/interest-cal-api/interest-cal-api /service/interest-cal-api
+WORKDIR /service
+CMD [ "./interest-cal-api" ]
+
+EXPOSE 3500
+
+LABEL org.opensource.image.created="${BUILD_DATE}" \
+      org.opensource.image.title="interest-cal-api" \
+      org.opensource.image.auther="atyagi9006" \
+      org.opensource.image.source="https://github.com/atyagi9006/interest-calculator-svc/app/services/interest-cal-api" \
+      org.opensource.image.revision="${BUILD_REF}" \
+      org.opensource.image.vendor="atyagi9006-self" \
