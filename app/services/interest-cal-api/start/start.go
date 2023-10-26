@@ -1,42 +1,35 @@
 package start
 
 import (
-	"fmt"
+	"context"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 
 	"github.com/atyagi9006/interest-calculator-svc/app/services/interest-cal-api/handlers"
 	"github.com/atyagi9006/interest-calculator-svc/business/data"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 const (
 	collection       = "simpleinterest"
-	url              = "mongodb://username:password@localhost:27017/fiber"
-	selectionTimeout = 5
-	mongoDBName      = "books"
+	url              = "mongodb://sam:sam@mongodb-container:27017"
+	selectionTimeout = 500
+	mongoDBName      = "intereststore"
 )
 
-func Run(build string) {
+func Run(svcBuild string) {
+	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
+	client := setupDB(ctx)
+	db := client.Database(mongoDBName)
+	defer client.Disconnect(ctx)
 
-	repoConn := &data.RepoConn{
-		MongoURL:         url,
-		SelectionTimeOut: selectionTimeout,
-		MongoDBName:      mongoDBName,
-	}
-	db, cancel, err := repoConn.NewRepoConn()
-	if err != nil {
-		log.Fatal("Database Connection Error $s", err)
-	}
-	fmt.Println("Database connection success!")
-
-	defer cancel()
-
-	app := setupApp(db)
+	app := setupApp(svcBuild, db)
 	// Listen from a different goroutine
 	go func() {
 		if err := app.Listen(":3500"); err != nil {
@@ -48,21 +41,40 @@ func Run(build string) {
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM) // When an interrupt or termination signal is sent, notify the channel
 
 	<-c // This blocks the main thread until an interrupt is received
-	fmt.Println("Gracefully shutting down...")
+	log.Println("Gracefully shutting down...")
 	_ = app.Shutdown()
 
-	fmt.Println("Running cleanup tasks...")
+	log.Println("Running cleanup tasks...")
 
-	// Your cleanup tasks go here
-	// db.Close()
-	// redisConn.Close()
-	fmt.Println("Fiber was successful shutdown.")
+	log.Println("Fiber was successful shutdown.")
 
 }
 
-func setupApp(db *mongo.Database) *fiber.App {
-	app := fiber.New()
+func setupApp(svcBuild string, db *mongo.Database) *fiber.App {
+	app := fiber.New(
+		fiber.Config{
+			AppName: svcBuild,
+		},
+	)
 	app.Use(cors.New())
 	handlers.V1(app, db, collection)
 	return app
+}
+
+func setupDB(ctx context.Context) *mongo.Client {
+	repoConn := &data.RepoConn{
+		MongoURL:         url,
+		SelectionTimeOut: selectionTimeout,
+		MongoDBName:      mongoDBName,
+	}
+	client, err := repoConn.NewRepoConn(ctx)
+	if err != nil {
+		log.Fatal("Database Connection Error $s", err)
+	}
+
+	if err := client.Ping(context.TODO(), readpref.Primary()); err != nil {
+		log.Fatal("Database ping failed $s", err)
+	}
+	log.Println("Database connection success!")
+	return client
 }

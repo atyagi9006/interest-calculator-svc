@@ -14,15 +14,13 @@ type RepoConn struct {
 	MongoDBName      string
 }
 
-func (rc *RepoConn) NewRepoConn() (*mongo.Database, context.CancelFunc, error) {
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+func (rc *RepoConn) NewRepoConn(ctx context.Context) (*mongo.Client, error) {
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
 		rc.MongoURL).SetServerSelectionTimeout(time.Duration(rc.SelectionTimeOut)*time.
 		Second))
 	if err != nil {
-		cancel()
-		return nil, nil, err
+		
+		return nil, err
 	}
-	db := client.Database(rc.MongoDBName)
-	return db, cancel, nil
+	return client, nil
 }

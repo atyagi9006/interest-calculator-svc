@@ -67,7 +67,7 @@ func (h *SIHandler) createSimpleInterest(c *fiber.Ctx) error {
 		})
 	}
 
-	h.CalculateSI(simpleInterest)
+	h.calculateSI(simpleInterest)
 	// Create one SimpleInterest.
 	err := h.simpleInterestSVC.CreateSimpleInterest(customContext, simpleInterest)
 	if err != nil {
@@ -107,7 +107,7 @@ func (h *SIHandler) deleteSimpleInterest(c *fiber.Ctx) error {
 	return c.SendStatus(fiber.StatusNoContent)
 }
 
-func (h *SIHandler) CalculateSI(si *entities.SimpleInterest) {
+func (h *SIHandler) calculateSI(si *entities.SimpleInterest) {
 	si.InterestAmount = (si.Princpal * si.ROI * si.TimePeriod) / 100
 	si.FinalAmount = si.Princpal + si.InterestAmount
 }

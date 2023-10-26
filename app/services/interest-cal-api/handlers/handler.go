@@ -13,7 +13,6 @@ import (
 func V1(app *fiber.App, db *mongo.Database, collection string) {
 	siCollection := db.Collection(collection)
 	siRepo := repo.NewRepo(siCollection)
-	// Register user management and authentication endpoints.
 	siService := simpleinterest.NewService(siRepo)
 	v1SIGrp.NewSIHandler(app.Group("/api/v1/si"), siService)
 
