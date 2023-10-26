@@ -1,8 +1,26 @@
 version: "3.9"
+
 services:
   interest-cal-app:
     restart: always
     image: ${IMAGE_NAME}
     ports:
       - 3500:3500
+    networks:
+      - application
     command: ./interest-cal-api
+
+  mongodb:
+    image: mongo:6-jammy
+    ports:
+      - '27017:27017'
+    volumes:
+      - dbdata6:/data/db
+    networks:
+      - application
+
+volumes:
+  dbdata6:
+
+networks:
+  application:
