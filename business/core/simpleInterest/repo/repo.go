@@ -2,7 +2,6 @@ package repo
 
 import (
 	"context"
-	"time"
 
 	"github.com/atyagi9006/interest-calculator-svc/business/core/entities"
 	"go.mongodb.org/mongo-driver/bson"
@@ -27,9 +26,7 @@ func NewRepo(collection *mongo.Collection) Repository {
 }
 
 func (repo *repository) Create(ctx context.Context, simpleinterest *entities.SimpleInterest) (*entities.SimpleInterest, error) {
-	simpleinterest.ID = primitive.NewObjectID()
-	simpleinterest.CreatedAt = time.Now()
-	simpleinterest.UpdatedAt = time.Now()
+
 	_, err := repo.Collection.InsertOne(ctx, simpleinterest)
 	if err != nil {
 		return nil, err
@@ -40,13 +37,13 @@ func (repo *repository) Read(ctx context.Context, id string) (*entities.SimpleIn
 
 	_id, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	res:=&entities.SimpleInterest{}
+	res := &entities.SimpleInterest{}
 
 	filter := bson.D{{Key: "_id", Value: _id}}
-	if err :=repo.Collection.FindOne(ctx, filter).Decode(&res); err != nil {
-		return nil,err
+	if err := repo.Collection.FindOne(ctx, filter).Decode(&res); err != nil {
+		return nil, err
 	}
 	return res, nil
 }
