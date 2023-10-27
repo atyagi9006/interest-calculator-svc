@@ -8,8 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-// v1 binds all the version 1 routes.
-
+//V1(app fiber.Router, db *mongo.Database, collection string)  binds all the version 1 routes.
 func V1(app fiber.Router, db *mongo.Database, collection string) {
 	siCollection := db.Collection(collection)
 	siRepo := repo.NewRepo(siCollection)

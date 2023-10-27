@@ -6,6 +6,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+// SimpleInterest represents a SimpleInterest  model which is used for taking input and storing data in mongo db
 type SimpleInterest struct {
 	ID             primitive.ObjectID `json:"id"  bson:"_id,omitempty"`
 	Princpal       float64            `json:"princpal" validate:"required" bson:"princpal"`

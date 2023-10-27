@@ -9,6 +9,13 @@ This service provides different feature like api extendability, reuseability, se
 3. There should be no circular imorts and imports are only done from down to top (i.e. any code in app packages could import any package in business layer.) But vicea-verse should not be done.    
 4. This service could be build with different version. Need to sepecify in Makefile. Default value of VERSION  is 1.0
 
+## Tech stack and framework used
+1. GoFiber - for hosting service api handles
+2. Mongodb - for storing data 
+3. Docker - for containerization
+4. counterfeiter- for generating mocks
+5. testify - for test assertion 
+
 ## Design 
 ![Alt text](design.png)
 
@@ -17,6 +24,7 @@ This service provides different feature like api extendability, reuseability, se
 
 ### **pre requisites**
 1. Install docker and docker compose
+2. install golang 
 
 ### **Steps to run**
 To run service run this command in interest-calculator-svc.This first test the service and build the docker image will specified version and once done will spawn two containers (i.e.mongodb-container, interest-cal)
@@ -27,11 +35,15 @@ To stop service run this command in interest-calculator-svc.This will stop and r
 ```
 make stop
 ```
-To test service seperatly run this command. This will test the service withour caching the last output and also checks the race condition. 
+To test service seperatly run this command. This will run all the table driven unit tests for service withour caching the last output and also checks the race condition. 
 ```
 make test
 ```
 
+To re-generate the mocks run this command.
+```
+make gen
+```
 
 ## Project Tree
 ```

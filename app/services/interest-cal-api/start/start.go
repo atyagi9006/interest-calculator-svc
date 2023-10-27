@@ -25,6 +25,7 @@ const (
 	appPort          = "3500"
 )
 
+//Run(svcBuild) will setup db and fiber app to host the api and also handles the graceful shutdown  
 func Run(svcBuild string) {
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 	client := setupDB(ctx)
@@ -52,6 +53,7 @@ func Run(svcBuild string) {
 
 }
 
+//setupApp(setupApp,setupApp). setup fiber app
 func setupApp(svcBuild string, db *mongo.Database) *fiber.App {
 	app := fiber.New(
 		fiber.Config{
@@ -65,6 +67,7 @@ func setupApp(svcBuild string, db *mongo.Database) *fiber.App {
 	return app
 }
 
+//setupDB(ctx). setup the mongodb client
 func setupDB(ctx context.Context) *mongo.Client {
 	repoConn := &data.RepoConn{
 		MongoURL:         url,

@@ -9,11 +9,14 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+//Repository is a interface to interact and do operation on mongodb
 type Repository interface {
 	Create(ctx context.Context, simpleinterest *entities.SimpleInterest) (*entities.SimpleInterest, error)
 	Read(ctx context.Context, id string) (*entities.SimpleInterest, error)
 	Delete(ctx context.Context, ID string) error
 }
+
+//repository handle and implements the operation on mongodb  
 type repository struct {
 	Collection *mongo.Collection
 }
@@ -25,6 +28,7 @@ func NewRepo(collection *mongo.Collection) Repository {
 	}
 }
 
+//Create it creates the simpleinterest data on mongodb
 func (repo *repository) Create(ctx context.Context, simpleinterest *entities.SimpleInterest) (*entities.SimpleInterest, error) {
 
 	_, err := repo.Collection.InsertOne(ctx, simpleinterest)
@@ -33,6 +37,8 @@ func (repo *repository) Create(ctx context.Context, simpleinterest *entities.Sim
 	}
 	return simpleinterest, nil
 }
+
+//Read it reads the simpleinterest data on mongodb
 func (repo *repository) Read(ctx context.Context, id string) (*entities.SimpleInterest, error) {
 
 	_id, err := primitive.ObjectIDFromHex(id)
@@ -47,6 +53,8 @@ func (repo *repository) Read(ctx context.Context, id string) (*entities.SimpleIn
 	}
 	return res, nil
 }
+
+//Delete it deletes the simpleinterest data on mongodb
 func (repo *repository) Delete(ctx context.Context, ID string) error {
 	simpleinterestID, err := primitive.ObjectIDFromHex(ID)
 	if err != nil {

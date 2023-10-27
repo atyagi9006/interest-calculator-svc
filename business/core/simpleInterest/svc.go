@@ -17,16 +17,20 @@ const (
 	errInvalidId         = "invalid input"
 )
 
+//SimpleinterestSVC is a the service to calculate, store, fetch  and delete simple interest
 type SimpleinterestSVC struct {
 	repo repo.Repository
 }
 
+
+//NewService initiate simpleInterestSVC
 func NewService(r repo.Repository) *SimpleinterestSVC {
 	return &SimpleinterestSVC{
 		repo: r,
 	}
 }
 
+//CreateSimpleInterest calculate and  creates simpleinterest in mongo
 func (siSVC *SimpleinterestSVC) CreateSimpleInterest(ctx context.Context, si *entities.SimpleInterest) error {
 	err := siSVC.calculateSI(si)
 	if err != nil {
@@ -44,6 +48,8 @@ func (siSVC *SimpleinterestSVC) CreateSimpleInterest(ctx context.Context, si *en
 
 }
 
+
+//GetSimpleInterest get simpleinterest from mongo
 func (siSVC *SimpleinterestSVC) GetSimpleInterest(ctx context.Context, id string) (*entities.SimpleInterest, error) {
 	if id == "" {
 		return nil, errors.New(errInvalidId)
@@ -58,6 +64,7 @@ func (siSVC *SimpleinterestSVC) GetSimpleInterest(ctx context.Context, id string
 
 }
 
+//DeleteSimpleInterest get simpleinterest from mongo
 func (siSVC *SimpleinterestSVC) DeleteSimpleInterest(ctx context.Context, id string) error {
 	if id == "" {
 		return errors.New(errInvalidId)
@@ -70,6 +77,8 @@ func (siSVC *SimpleinterestSVC) DeleteSimpleInterest(ctx context.Context, id str
 	return nil
 
 }
+
+//calculateSI calculates the simple interest for given inputs
 func (siSVC *SimpleinterestSVC) calculateSI(si *entities.SimpleInterest) error {
 	if si.Princpal <= 0.0 {
 		return errors.New(errInvalidPrincipal)

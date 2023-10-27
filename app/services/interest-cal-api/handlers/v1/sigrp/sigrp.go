@@ -8,10 +8,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// SIHandler manages the set of simpleInterest enpoints.
 type SIHandler struct {
 	simpleInterestSVC *si.SimpleinterestSVC
 }
 
+// NewSIHandler initiates Sihandler and routes simpleInterest endpoints
 func NewSIHandler(siRoute fiber.Router, siSVC *si.SimpleinterestSVC) {
 	// Create a handler based on our created service / use-case.
 	handler := &SIHandler{
@@ -26,15 +28,16 @@ func NewSIHandler(siRoute fiber.Router, siSVC *si.SimpleinterestSVC) {
 	siRoute.Delete("/:id", handler.deleteSimpleInterest)
 }
 
+// getSimpleInterest fetch the simpleInterests from mongo db
 func (h *SIHandler) getSimpleInterest(c *fiber.Ctx) error {
 	// Create cancellable context.
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	// Fetch parameter.
 	param := c.Params("id")
-	
+
 	// Get one SimpleInterest.
-	SimpleInterest, err := h.simpleInterestSVC.GetSimpleInterest(customContext,param)
+	SimpleInterest, err := h.simpleInterestSVC.GetSimpleInterest(customContext, param)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -48,6 +51,8 @@ func (h *SIHandler) getSimpleInterest(c *fiber.Ctx) error {
 		"data":   SimpleInterest,
 	})
 }
+
+// createSimpleInterest calculates and store the simpleInterests from mongo db
 func (h *SIHandler) createSimpleInterest(c *fiber.Ctx) error {
 	// Initialize variables.
 	simpleInterest := &entities.SimpleInterest{}
@@ -81,7 +86,7 @@ func (h *SIHandler) createSimpleInterest(c *fiber.Ctx) error {
 	})
 }
 
-// Deletes a single SimpleInterest.
+// deleteSimpleInterest deletes SimpleInterest for a given id from mongo.
 func (h *SIHandler) deleteSimpleInterest(c *fiber.Ctx) error {
 	// Initialize previous SimpleInterest ID.
 
