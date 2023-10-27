@@ -37,18 +37,18 @@ func (repo *repository) Create(ctx context.Context, simpleinterest *entities.Sim
 	return simpleinterest, nil
 }
 func (repo *repository) Read(ctx context.Context, id string) (*entities.SimpleInterest, error) {
-	/* var simpleinterests []presenterepo.Book
-	cursor, err := repo.Collection.Find(context.Background(), bson.D{})
+
+	_id, err := primitive.ObjectIDFromHex(id)
 	if err != nil {
-		return nil, err
+		return nil,err
 	}
-	for cursorepo.Next(context.TODO()) {
-		var simpleinterest presenterepo.Book
-		_ = cursorepo.Decode(&simpleinterest)
-		simpleinterests = append(simpleinterests, simpleinterest)
+	res:=&entities.SimpleInterest{}
+
+	filter := bson.D{{Key: "_id", Value: _id}}
+	if err :=repo.Collection.FindOne(ctx, filter).Decode(&res); err != nil {
+		return nil,err
 	}
-	return &simpleinterests, nil */
-	return nil, nil
+	return res, nil
 }
 func (repo *repository) Delete(ctx context.Context, ID string) error {
 	simpleinterestID, err := primitive.ObjectIDFromHex(ID)

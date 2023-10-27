@@ -19,25 +19,22 @@ func NewSIHandler(siRoute fiber.Router, siSVC *si.SimpleinterestSVC) {
 	}
 
 	// Declare routing endpoints for general routes.
-	siRoute.Get("", handler.getSimpleInterest)
 	siRoute.Post("", handler.createSimpleInterest)
 
 	// Declare routing endpoints for specific routes.
-	siRoute.Get("/:SimpleInterestID", handler.getSimpleInterest)
-	siRoute.Delete("/:SimpleInterestID", handler.deleteSimpleInterest)
+	siRoute.Get("/:id", handler.getSimpleInterest)
+	siRoute.Delete("/:id", handler.deleteSimpleInterest)
 }
 
 func (h *SIHandler) getSimpleInterest(c *fiber.Ctx) error {
 	// Create cancellable context.
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
 	// Fetch parameter.
-
-	// TODO: fix it for SIID
-
+	param := c.Params("id")
+	
 	// Get one SimpleInterest.
-	SimpleInterest, err := h.simpleInterestSVC.GetSimpleInterest(customContext, "targetedSimpleInterestID")
+	SimpleInterest, err := h.simpleInterestSVC.GetSimpleInterest(customContext,param)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -67,7 +64,6 @@ func (h *SIHandler) createSimpleInterest(c *fiber.Ctx) error {
 		})
 	}
 
-	h.calculateSI(simpleInterest)
 	// Create one SimpleInterest.
 	err := h.simpleInterestSVC.CreateSimpleInterest(customContext, simpleInterest)
 	if err != nil {
@@ -92,10 +88,10 @@ func (h *SIHandler) deleteSimpleInterest(c *fiber.Ctx) error {
 	// Create cancellable context.
 	customContext, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	params := c.Params("id")
 
-	//TODO : fix it for SIID
 	// Delete one SimpleInterest.
-	err := h.simpleInterestSVC.DeleteSimpleInterest(customContext, "targetedSimpleInterestID")
+	err := h.simpleInterestSVC.DeleteSimpleInterest(customContext, params)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(&fiber.Map{
 			"status":  "fail",
@@ -105,9 +101,4 @@ func (h *SIHandler) deleteSimpleInterest(c *fiber.Ctx) error {
 
 	// Return 204 No Content.
 	return c.SendStatus(fiber.StatusNoContent)
-}
-
-func (h *SIHandler) calculateSI(si *entities.SimpleInterest) {
-	si.InterestAmount = (si.Princpal * si.ROI * si.TimePeriod) / 100
-	si.FinalAmount = si.Princpal + si.InterestAmount
 }

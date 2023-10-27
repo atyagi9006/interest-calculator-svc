@@ -18,8 +18,8 @@ func NewService(r repo.Repository) *SimpleinterestSVC {
 }
 
 func (siSVC *SimpleinterestSVC) CreateSimpleInterest(ctx context.Context, si *entities.SimpleInterest) error {
-
-	_, err := siSVC.repo.Create(ctx,si)
+	siSVC.calculateSI(si)
+	_, err := siSVC.repo.Create(ctx, si)
 	if err != nil {
 		return err
 	}
@@ -28,25 +28,27 @@ func (siSVC *SimpleinterestSVC) CreateSimpleInterest(ctx context.Context, si *en
 
 }
 
-
-func (siSVC *SimpleinterestSVC) GetSimpleInterest(ctx context.Context, id string)(*entities.SimpleInterest, error) {
-
-	 val, err := siSVC.repo.Read(ctx,id)
+func (siSVC *SimpleinterestSVC) GetSimpleInterest(ctx context.Context, id string) (*entities.SimpleInterest, error) {
+	val, err := siSVC.repo.Read(ctx, id)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 
-	return val,nil
+	return val, nil
 
 }
 
 func (siSVC *SimpleinterestSVC) DeleteSimpleInterest(ctx context.Context, id string) error {
 
-	 err := siSVC.repo.Delete(ctx,id)
+	err := siSVC.repo.Delete(ctx, id)
 	if err != nil {
 		return err
 	}
 
 	return nil
 
+}
+func (siSVC *SimpleinterestSVC) calculateSI(si *entities.SimpleInterest) {
+	si.InterestAmount = (si.Princpal * si.ROI * si.TimePeriod) / 100
+	si.FinalAmount = si.Princpal + si.InterestAmount
 }
