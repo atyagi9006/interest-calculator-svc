@@ -17,10 +17,12 @@ import (
 )
 
 const (
+	//TODO make these configurable
 	collection       = "simpleinterest"
 	url              = "mongodb://sam:sam@mongodb-container:27017"
 	selectionTimeout = 500
 	mongoDBName      = "intereststore"
+	appPort          = "3500"
 )
 
 func Run(svcBuild string) {
@@ -32,7 +34,7 @@ func Run(svcBuild string) {
 	app := setupApp(svcBuild, db)
 	// Listen from a different goroutine
 	go func() {
-		if err := app.Listen(":3500"); err != nil {
+		if err := app.Listen(":" + appPort); err != nil {
 			log.Panic(err)
 		}
 	}()
@@ -57,7 +59,9 @@ func setupApp(svcBuild string, db *mongo.Database) *fiber.App {
 		},
 	)
 	app.Use(cors.New())
-	handlers.V1(app, db, collection)
+	api := app.Group("/api")
+	handlers.V1(api, db, collection)
+	//if required we can extend  api v2 api version
 	return app
 }
 

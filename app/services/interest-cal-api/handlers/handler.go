@@ -10,10 +10,10 @@ import (
 
 // v1 binds all the version 1 routes.
 
-func V1(app *fiber.App, db *mongo.Database, collection string) {
+func V1(app fiber.Router, db *mongo.Database, collection string) {
 	siCollection := db.Collection(collection)
 	siRepo := repo.NewRepo(siCollection)
 	siService := simpleinterest.NewService(siRepo)
-	v1SIGrp.NewSIHandler(app.Group("/api/v1/si"), siService)
+	v1SIGrp.NewSIHandler(app.Group("/v1/si"), siService)
 
 }
