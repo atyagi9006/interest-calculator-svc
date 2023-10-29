@@ -44,6 +44,13 @@ To re-generate the mocks run this command.
 ```
 make gen
 ```
+To test the apis ```run make start``` and import the postmen collection in postamn or use ``` curl ``` to hit apis. All the api will hosted on ```localhost:3500```
+# API Documentations
+ HTTP Verbs | Endpoints | Action |
+| --- | --- | --- |
+| POST | /api/v1/si | To create simpleinterest record in mongodb  |
+| GET | /api/v1/si/{id} | To get simpleinterest record from mongodb |
+| DELETE | /api/v1/si/{id} | To delete simpleinterest record from mongodb |
 
 ## Project Tree
 ```

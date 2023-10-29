@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "458da052-964b-4371-94e4-24917667632d",
+		"name": "interest-svc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4631100"
+	},
+	"item": [
+		{
+			"name": "create-si",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"principal\":50000.00,\n    \"roi\":6.5,\n    \"timePeriod\":3.5\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3500/api/v1/si",
+					"host": [
+						"localhost"
+					],
+					"port": "3500",
+					"path": [
+						"api",
+						"v1",
+						"si"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-si",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3500/api/v1/si/653e5d32517ab213ae264e75",
+					"host": [
+						"localhost"
+					],
+					"port": "3500",
+					"path": [
+						"api",
+						"v1",
+						"si",
+						"653e5d32517ab213ae264e75"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "del-si",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3500/api/v1/si/653e5d32517ab213ae264e75",
+					"host": [
+						"localhost"
+					],
+					"port": "3500",
+					"path": [
+						"api",
+						"v1",
+						"si",
+						"653e5d32517ab213ae264e75"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

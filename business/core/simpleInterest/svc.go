@@ -80,7 +80,7 @@ func (siSVC *SimpleinterestSVC) DeleteSimpleInterest(ctx context.Context, id str
 
 //calculateSI calculates the simple interest for given inputs
 func (siSVC *SimpleinterestSVC) calculateSI(si *entities.SimpleInterest) error {
-	if si.Princpal <= 0.0 {
+	if si.Principal <= 0.0 {
 		return errors.New(errInvalidPrincipal)
 	}
 	if si.ROI <= 0.0 {
@@ -89,7 +89,7 @@ func (siSVC *SimpleinterestSVC) calculateSI(si *entities.SimpleInterest) error {
 	if si.TimePeriod <= 0.0 {
 		return errors.New(errInvalidTimePeriod)
 	}
-	si.InterestAmount = (si.Princpal * si.ROI * si.TimePeriod) / 100
-	si.FinalAmount = si.Princpal + si.InterestAmount
+	si.InterestAmount = (si.Principal * si.ROI * si.TimePeriod) / 100
+	si.FinalAmount = si.Principal + si.InterestAmount
 	return nil
 }

@@ -22,7 +22,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       0,
+				Principal:       0,
 				ROI:            0,
 				TimePeriod:     0,
 				InterestAmount: 0,
@@ -43,7 +43,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       -1,
+				Principal:       -1,
 				ROI:            0,
 				TimePeriod:     0,
 				InterestAmount: 0,
@@ -64,7 +64,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            0,
 				TimePeriod:     0,
 				InterestAmount: 0,
@@ -85,7 +85,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            -1,
 				TimePeriod:     0,
 				InterestAmount: 0,
@@ -106,7 +106,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            5.5,
 				TimePeriod:     0,
 				InterestAmount: 0,
@@ -127,7 +127,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            5.5,
 				TimePeriod:     -1,
 				InterestAmount: 0,
@@ -149,7 +149,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            5.5,
 				TimePeriod:     1,
 				InterestAmount: 0,
@@ -170,7 +170,7 @@ func TestCreateSimpleInterest(t *testing.T) {
 			ctx := context.Background()
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            5.5,
 				TimePeriod:     1,
 				InterestAmount: 0,
@@ -230,7 +230,7 @@ func TestGetSimpleInterest(t *testing.T) {
 			fakeRepo.CreateReturns(nil, nil)
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            5.5,
 				TimePeriod:     1,
 				InterestAmount: 0,
@@ -292,7 +292,7 @@ func TestDeleteSimpleInterest(t *testing.T) {
 			fakeRepo.CreateReturns(nil, nil)
 			input := &entities.SimpleInterest{
 				ID:             [12]byte{},
-				Princpal:       100,
+				Principal:       100,
 				ROI:            5.5,
 				TimePeriod:     1,
 				InterestAmount: 0,
